@@ -60,7 +60,7 @@ def parse_gallery_post(post_data:dict, image_url:str):
             'subreddit':    post_data['subreddit'],
             'title':        post_data['title'],
             'type':         'image',
-            'extension':    'jpg',   # Its always jpg
+            'extension':    'jpg',   # Its always jpg (Narrator: That wasnt the case, like here: https://www.reddit.com/r/blurrypicturesofcats/comments/10ane0m/blurry_picture_of_a_cat/)
         })
 
     return ret
@@ -109,6 +109,7 @@ def main():
         'kitten',
         'legalcatadvice',
         'meow_irl',
+        'meowow',
         'miscatculations',
         'motorboat',
         'murdermittens',
@@ -119,6 +120,7 @@ def main():
         'oneorangebraincell',
         'petthedamncat',
         'petthedamncat',
+        'pointytailedkittens',
         'politecats',
         'pottedcats',
         'sadcats',
@@ -165,7 +167,7 @@ def main():
                 continue
 
             # Checks if its an image
-            if post_data.get('post_hint') == 'image':    # Used .get() because images removed by REDDIT doesnt have a post_hint attribute, like https://www.reddit.com/r/Kitten/comments/tnilow/baby_kitten_summer_adventures/
+            if post_data.get('post_hint') == 'image':    # Used .get() because images removed by REDDIT dont have a post_hint attribute, like https://www.reddit.com/r/Kitten/comments/tnilow/baby_kitten_summer_adventures/
                 dic = parse_image_post(post_data)
                 to_write.append(dic)
 
@@ -214,6 +216,19 @@ test6.json:  The needed data of all images and videos scraped from one sub
 test7.json:  The needed data of all images and videos scraped from different subs
 test8.json:  ALL the data of r/catswhoyawn, because that subreddit was giving me an error 
 test9.json:  ALL the data of r/kitten,      because that subreddit was giving me an error 
+
+
+
+
+
+TO-DO
+
+-> Fix ext issue in parse_gallery_post()
+-> add stats.html
+-> add /
+-> Add sub arg in js
+-> Check TOR req
+
 '''
 
 
