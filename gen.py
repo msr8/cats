@@ -49,18 +49,19 @@ def parse_gallery_post(post_data:dict, image_url:str):
     if not images:                        # Sometimes `images` can be "null", god knows why, here is a post like that: https://reddit.com/r/CatsWhoYawn/comments/z4rllw/beeper_yawns_still_hungover_from_tryptophan_ig/
         return []
     for img in images.keys():
+        ext = post_data['media_metadata'][img]['m'].split('image/')[-1]
         ret.append({
             'created_utc':  post_data['created_utc'],
             'domain':       post_data['domain'],
-            'filename':     f'{img}.jpg',
-            'media_url':    image_url.format(filename=f'{img}.jpg'),
+            'filename':     f'{img}.{ext}',
+            'media_url':    image_url.format(filename=f'{img}.{ext}'),
             'op':           post_data['author'],
             'post_url':     f'https://reddit.com{post_data["permalink"]}',
             'score':        post_data['score'],
             'subreddit':    post_data['subreddit'],
             'title':        post_data['title'],
             'type':         'image',
-            'extension':    'jpg',   # Its always jpg (Narrator: That wasnt the case, like here: https://www.reddit.com/r/blurrypicturesofcats/comments/10ane0m/blurry_picture_of_a_cat/)
+            'extension':    ext,   # Its always jpg (Narrator: That wasnt the case, like here: https://www.reddit.com/r/blurrypicturesofcats/comments/10ane0m/blurry_picture_of_a_cat/)
         })
 
     return ret
@@ -175,6 +176,9 @@ def main():
         with open('docs/files.json', 'w') as f:
             json.dump(to_write, f, indent=4)
 
+        # with open('testing/test10.json', 'w') as f:
+        #     json.dump(to_write, f, indent=4)
+
 
 
 
@@ -207,16 +211,16 @@ if __name__ == '__main__':
 '''
 REMEMBER, GALLERY POSTS DONT HAVE "post_hint"
 
-test.json:   ALL
-test2.json:  Having the "is_gallery" attribute
-test3.json:  Not having the "i.redd.it" domain
-test4.json:  The post_data of all images and non-galleries
-test5.json:  The needed data of all images (including galleries) scraped from one sub
-test6.json:  The needed data of all images and videos scraped from one sub
-test7.json:  The needed data of all images and videos scraped from different subs
-test8.json:  ALL the data of r/catswhoyawn, because that subreddit was giving me an error 
-test9.json:  ALL the data of r/kitten,      because that subreddit was giving me an error 
-
+test.json:    ALL
+test2.json:   Having the "is_gallery" attribute
+test3.json:   Not having the "i.redd.it" domain
+test4.json:   The post_data of all images and non-galleries
+test5.json:   The needed data of all images (including galleries) scraped from one sub
+test6.json:   The needed data of all images and videos scraped from one sub
+test7.json:   The needed data of all images and videos scraped from different subs
+test8.json:   ALL the data of r/catswhoyawn, because that subreddit was giving me an error 
+test9.json:   ALL the data of r/kitten,      because that subreddit was giving me an error 
+test10.json:  ALL the data of all posts having the "is_gallery" attribute
 
 
 
