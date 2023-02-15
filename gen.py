@@ -31,6 +31,11 @@ NeonStyle.colors = (
 
 
 
+
+
+
+
+
 def parse_image_post(post_data:dict):
     return {
             'created_utc':  post_data['created_utc'],
@@ -166,80 +171,15 @@ def domain_chart(raw_data):
 
 
 
+
+
 def gen_files_json():
-    URL        = 'https://www.reddit.com/r/{subreddit}/top/.json?limit=100&t=year'
-    IMAGE_URL  = 'https://i.redd.it/{filename}' # i is for images, v is for videos
-    HEADERS    = {'User-Agent': 'https://github.com/msr8/cats'}
-    SUBREDDITS =  [
-        'activationsound',
-        'airplaneears',
-        'blurrypicturesofcats',
-        'catculations',
-        'catfaceplant',
-        'cathostage',
-        'catloaf',
-        'catpics',
-        'catpictures',
-        'cats',
-        'catsarealiens',
-        'catsarealiens',
-        'catsareassholes',
-        'catsareliquid',
-        'catsbeingbanks',
-        'catsbeingcats',
-        'catsinsinks',
-        'catsmirin',
-        'catsoncats',
-        'catsonkeyboards',
-        'catsstandingup',
-        'catsvstechnology',
-        'catswhosmoke',
-        'catswhosqueak',
-        'catswhoyawn',
-        'catswhoyell',
-        'catswithjobs',
-        'catswithsocks',
-        'curledfeetsies',
-        'cuteguyswithcats',
-        'drillcats',
-        'holdmycatnip',
-        'illegallysmolcats',
-        'kitten',
-        'legalcatadvice',
-        'meow_irl',
-        'meowow',
-        'miscatculations',
-        'motorboat',
-        'murdermittens',
-        'nebelung',
-        'nervysquervies',
-        'noodlebones',
-        'notmycat',
-        'oneorangebraincell',
-        'petthedamncat',
-        'petthedamncat',
-        'pointytailedkittens',
-        'politecats',
-        'pottedcats',
-        'sadcats',
-        'shouldercats',
-        'siamesecats',
-        'standardissuecat',
-        'startledcats',
-        'startledcats',
-        'stuffoncats',
-        'supermodelcats',
-        'thecatdimension',
-        'thecattrapisworking',
-        'thisismylifemeow',
-        'turkishcats',
-        'whatswrongwithyourcat'
-    ]
     to_write = []
 
-
-    for num, sub in enumerate(SUBREDDITS):
-        print(f'{num+1}/{len(SUBREDDITS)}: {sub}')
+    pbar = tqdm(leave=True, colour=COLOR, total=len(SUBREDDITS))
+    for sub in SUBREDDITS:
+        # printf(f'[b GREEN1][JSON][/]  {n+1}/{len(SUBREDDITS)}) {sub}')
+        pbar.set_description(sub)
         url      = URL.format(subreddit=sub)
         r        = rq.get(url, headers=HEADERS)
         sub_data = r.json()
@@ -268,12 +208,14 @@ def gen_files_json():
             if post_data.get('post_hint') == 'image':    # Used .get() because images removed by REDDIT dont have a post_hint attribute, like https://www.reddit.com/r/Kitten/comments/tnilow/baby_kitten_summer_adventures/
                 dic = parse_image_post(post_data)
                 to_write.append(dic)
+        pbar.update()
+    pbar.close()
 
     with open('docs/files.json', 'w') as f:
         json.dump(to_write, f, indent=4)
 
-        # with open('testing/test10.json', 'w') as f:
-        #     json.dump(to_write, f, indent=4)
+    # with open('testing/test10.json', 'w') as f:
+    #     json.dump(to_write, f, indent=4)
 
 
 
@@ -292,6 +234,112 @@ def gen_stats():
 
 
 
+def gen_subs_md():
+    # Initialises text
+    text =  '| Subreddit | About | Members |\n'
+    text += '| --------- | ----- | ------- |\n'
+
+    # Gets all the data
+    pbar = tqdm(leave=True, colour=COLOR, total=len(SUBREDDITS))
+    for sub in SUBREDDITS:
+        # printf(f'[b GREEN3][MARKDOWN][/]  {n+1}/{len(SUBREDDITS)}) {sub}')
+        pbar.set_description(sub)
+
+        r        = rq.get(f'https://www.reddit.com/r/{sub}/about.json', headers=HEADERS)
+        sub_data = r.json()['data']
+        name     = sub_data['display_name_prefixed']
+        about    = '-' if not sub_data['public_description'] else sub_data['public_description'].splitlines()[0]    # Incase the about is empty
+        members  = sub_data['subscribers']
+
+        text    += f'| [{name}](https://reddit.com/r/{sub}) | {about} | {members:,} |\n'
+        pbar.update()
+    pbar.close()
+
+    # Writes it
+    with open('subreddits.md', 'w') as f:
+        f.write(text)
+
+
+
+
+
+
+
+
+
+
+
+
+
+URL        = 'https://www.reddit.com/r/{subreddit}/top/.json?limit=100&t=year'
+IMAGE_URL  = 'https://i.redd.it/{filename}' # i is for images, v is for videos
+HEADERS    = {'User-Agent': 'https://github.com/msr8/cats'}
+COLOR      = '#696969'
+SUBREDDITS =  [
+    'activationsound',
+    'airplaneears',
+    'blurrypicturesofcats',
+    'catculations',
+    'catfaceplant',
+    'cathostage',
+    'catloaf',
+    'catpics',
+    'catpictures',
+    'cats',
+    'catsarealiens',
+    'catsarealiens',
+    'catsareassholes',
+    'catsareliquid',
+    'catsbeingbanks',
+    'catsbeingcats',
+    'catsinsinks',
+    'catsmirin',
+    'catsoncats',
+    'catsonkeyboards',
+    'catsridingroombas',
+    'catsstandingup',
+    'catsvstechnology',
+    'catswhosmoke',
+    'catswhosqueak',
+    'catswhoyawn',
+    'catswhoyell',
+    'catswithjobs',
+    'catswithsocks',
+    'curledfeetsies',
+    'cuteguyswithcats',
+    'drillcats',
+    'holdmycatnip',
+    'illegallysmolcats',
+    'kitten',
+    'legalcatadvice',
+    'meow_irl',
+    'meowow',
+    'miscatculations',
+    'motorboat',
+    'murdermittens',
+    'nebelung',
+    'nervysquervies',
+    'noodlebones',
+    'notmycat',
+    'oneorangebraincell',
+    'petthedamncat',
+    'petthedamncat',
+    'pointytailedkittens',
+    'politecats',
+    'pottedcats',
+    'sadcats',
+    'shouldercats',
+    'siamesecats',
+    'standardissuecat',
+    'startledcats',
+    'stuffoncats',
+    'supermodelcats',
+    'thecatdimension',
+    'thecattrapisworking',
+    'thisismylifemeow',
+    'turkishcats',
+    'whatswrongwithyourcat',
+]
 
 
 
@@ -299,8 +347,9 @@ if __name__ == '__main__':
     try:
         console = Console()
         
-        # gen_files_json()
+        gen_files_json()
         gen_stats()
+        gen_subs_md()
     except Exception as e:
         console.print_exception()
 
