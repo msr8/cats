@@ -8,8 +8,7 @@ import pygal
 
 import json
 
-# NeonStyle.transition = '0.5s ease-out'
-NeonStyle.transition = '0.5s'
+NeonStyle.transition = '0.3s ease-out'
 NeonStyle.colors = (
     '#ff5995',
     '#b6e354',
@@ -330,7 +329,7 @@ test10.json:  ALL the data of all posts having the "is_gallery" attribute
 TO-DO
 
 -> Fix ext issue in parse_gallery_post()
--> add stats.html
+-> add /library
 -> add /
 -> Add sub arg in js
 -> Check TOR req
