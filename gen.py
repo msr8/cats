@@ -168,6 +168,7 @@ def gen_files_json():
     IMAGE_URL  = 'https://i.redd.it/{filename}' # i is for images, v is for videos
     HEADERS    = {'User-Agent': 'https://github.com/msr8/cats'}
     SUBREDDITS =  [
+        'activationsound',
         'airplaneears',
         'blurrypicturesofcats',
         'catculations',
