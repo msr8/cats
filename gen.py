@@ -113,7 +113,8 @@ def upvote_chart(raw_data):
     # for n, key in enumerate(data.keys()):
     #     chart.add(n+1, data[key])
     
-    chart.render_to_file('docs/stats/1-upvotes.svg')  
+    chart.render_to_file('docs/stats/charts/1-upvotes.svg') 
+    return data 
 
 
 def extension_chart(raw_data):
@@ -132,7 +133,8 @@ def extension_chart(raw_data):
     for key in data.keys():
         chart.add(key, data[key])
     
-    chart.render_to_file('docs/stats/2-extensions.svg')  
+    chart.render_to_file('docs/stats/charts/2-extensions.svg')
+    return data 
 
 
 def domain_chart(raw_data):
@@ -151,7 +153,8 @@ def domain_chart(raw_data):
     for key in data.keys():
         chart.add(key, data[key])
     
-    chart.render_to_file('docs/stats/3-domains.svg')  
+    chart.render_to_file('docs/stats/charts/3-domains.svg')  
+    return data 
 
 
 
@@ -279,9 +282,13 @@ def gen_stats():
     with open('docs/files.json') as f:
         raw_data  = json.load(f)
     # Generates the charts
-    upvote_chart(raw_data)
-    extension_chart(raw_data) 
-    domain_chart(raw_data)
+    data = {}
+    data['upvotes']    = upvote_chart(raw_data)
+    data['extensions'] = extension_chart(raw_data) 
+    data['domains']    = domain_chart(raw_data)
+    # Writes it to processed_data.json
+    with open('docs/stats/processed_data.json', 'w') as f:
+        json.dump(data, f, indent=4)
 
 
 
@@ -329,7 +336,6 @@ test10.json:  ALL the data of all posts having the "is_gallery" attribute
 
 TO-DO
 
--> Fix ext issue in parse_gallery_post()
 -> add /library
 -> add /
 -> Add sub arg in js

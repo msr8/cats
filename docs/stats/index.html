@@ -1,21 +1,61 @@
 <head>
     <meta name="darkreader-lock">
+    <!-- <script src="script.js"></script> -->
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Consolas" rel="stylesheet"> -->
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Comfortaa" rel="stylesheet"> -->
+    <!-- <link href=" https://fonts.googleapis.com/css2?family=Montserrat" rel="stylesheet"> -->
+
     <style>
-    html    {background-color: rgba(0,0,0,0.9);}
-    /* object  {width: 45%;} */
+        html    {background-color: rgba(0, 0, 0, 0.95);}
+
+        summary {
+            font-family: Montserrat;
+            color: white;
+            text-align: center;
+            font-size: 2em;
+            outline-style: solid;
+            outline-width: 1px;
+        }
+
+        #raw_data {
+            margin-left:  1%;
+            margin-right: 1%;
+            padding: 1%;
+            color: white;
+            background-color: rgb(20, 20, 20);
+            font-family: Consolas;
+            border-radius: 5px;
+            font-size: 0.8em;
+            text-align: left;
+        }
+
+        #footer {
+            text-align: center;
+            font-size: 0.8em;
+        }
     </style>
+
 </head>
 
 
 <body>
     <center>
-        <object data="1-upvotes.svg"    type="image/svg+xml" width="70%"></object>
-        <object data="1-upvotes-unsorted.svg"    type="image/svg+xml" width="70%"></object>
+        <object data="charts/1-upvotes.svg"    type="image/svg+xml" height="95%"></object>
+        <object data="charts/1-upvotes-unsorted.svg"    type="image/svg+xml" height="95%"></object>
         <br><br>
-        <object data="2-extensions.svg" type="image/svg+xml" width="49.72%"></object>
-        <object data="3-domains.svg"    type="image/svg+xml" width="49.72%"></object>
+        <object data="charts/2-extensions.svg" type="image/svg+xml" width="49.72%"></object>
+        <object data="charts/3-domains.svg"    type="image/svg+xml" width="49.72%"></object>
 
         <!-- <figure><embed type="image/svg+xml" src="1-upvotes.svg" width="70%"></figure> -->
     </center>
+
+    <br><br><br><br><br>
+
+    <!-- <details> -->
+        <!-- <summary>Raw Data</summary><br> -->
+        <!-- <pre id="raw_data">ERROR</pre> -->
+    <!-- </details> -->
+
+    <p id="footer"><a href="processed_data.json" target="_blank">Data file</a></p>
 </body>
 
