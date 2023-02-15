@@ -1,9 +1,34 @@
 from   tqdm         import tqdm
 from   rich.console import Console
+from   rich         import inspect
 from   rich         import print as printf
+from   pygal.style  import NeonStyle, DarkStyle, Style
 import requests     as     rq
+import pygal
 
 import json
+
+# NeonStyle.transition = '0.5s ease-out'
+NeonStyle.transition = '0.5s'
+NeonStyle.colors = (
+    '#ff5995',
+    '#b6e354',
+    '#feed6c',
+    '#8cedff',
+    '#9e6ffe',
+    '#899ca1',
+    '#f8f8f2',
+    '#bf4646',
+    # '#516083',
+    '#f92672',
+    '#82b414',
+    '#fd971f',
+    '#56c2d6',
+    '#808384',
+    '#8c54fe',
+    # '#465457'
+)
+
 
 
 
@@ -19,9 +44,8 @@ def parse_image_post(post_data:dict):
             'subreddit':    post_data['subreddit'],
             'title':        post_data['title'],
             'type':         'image',
-            'extension':    post_data['url'].split('/')[-1].split(".")[-1],
+            'extension':    post_data['url'].split('/')[-1].split(".")[-1].split('?')[0],    # after spliting url, result can be like filename.jpg?vbnojh76
         }
-
 
 
 def parse_video_post(post_data:dict):
@@ -39,7 +63,6 @@ def parse_video_post(post_data:dict):
             'type':         'video',
             'extension':    'mpd',
         }
-
 
 
 def parse_gallery_post(post_data:dict, image_url:str):
@@ -68,9 +91,80 @@ def parse_gallery_post(post_data:dict, image_url:str):
 
 
 
+def upvote_chart(raw_data):
+    # Initialises chart
+    chart = pygal.Bar(human_readable=True, style=NeonStyle, show_legend=False)
+    chart.title = 'Distribution of upvotes per subreddit'
+    chart.value_formatter = lambda x: '{:,}'.format(x)
+    data = {}
+
+    # Parses the raw data
+    for dic in raw_data:
+        sub       = dic['subreddit']
+        score     = dic['score']
+        if not sub in data.keys():    data[sub] = 0
+        data[sub] += score
+
+    # Adds the parsed data into the chart
+    data = dict(sorted(data.items(), key=lambda item: item[1], reverse=True))
+    for key in data.keys():
+        chart.add(key, data[key])
+
+    # data = dict(sorted(data.items(), key=lambda item: item[1], reverse=True))
+    # for n, key in enumerate(data.keys()):
+    #     chart.add(n+1, data[key])
+    
+    chart.render_to_file('docs/stats/1-upvotes.svg')  
 
 
-def main():
+def extension_chart(raw_data):
+    # Initialises chart
+    chart = pygal.Pie(human_readable=True, style=NeonStyle)
+    chart.title = 'Distribution of extensions'
+    data = {}
+
+    # Parses the raw data
+    for dic in raw_data:
+        ext = dic['extension']
+        if not ext in data.keys():    data[ext] = 0
+        data[ext] += 1
+
+    # Adds the parsed data into the chart
+    for key in data.keys():
+        chart.add(key, data[key])
+    
+    chart.render_to_file('docs/stats/2-extensions.svg')  
+
+
+def domain_chart(raw_data):
+    # Initialises chart
+    chart = pygal.Pie(human_readable=True, style=NeonStyle)
+    chart.title = 'Distribution of domains'
+    data = {}
+
+    # Parses the raw data
+    for dic in raw_data:
+        domain = dic['domain']
+        if not domain in data.keys():    data[domain] = 0
+        data[domain] += 1
+
+    # Adds the parsed data into the chart
+    for key in data.keys():
+        chart.add(key, data[key])
+    
+    chart.render_to_file('docs/stats/3-domains.svg')  
+
+
+
+
+
+
+
+
+
+
+
+def gen_files_json():
     URL        = 'https://www.reddit.com/r/{subreddit}/top/.json?limit=100&t=year'
     IMAGE_URL  = 'https://i.redd.it/{filename}' # i is for images, v is for videos
     HEADERS    = {'User-Agent': 'https://github.com/msr8/cats'}
@@ -172,16 +266,22 @@ def main():
                 dic = parse_image_post(post_data)
                 to_write.append(dic)
 
-
-        with open('docs/files.json', 'w') as f:
-            json.dump(to_write, f, indent=4)
+    with open('docs/files.json', 'w') as f:
+        json.dump(to_write, f, indent=4)
 
         # with open('testing/test10.json', 'w') as f:
         #     json.dump(to_write, f, indent=4)
 
 
 
-
+def gen_stats():
+    # Gets the raw data
+    with open('docs/files.json') as f:
+        raw_data  = json.load(f)
+    # Generates the charts
+    upvote_chart(raw_data)
+    extension_chart(raw_data) 
+    domain_chart(raw_data)
 
 
 
@@ -191,7 +291,9 @@ def main():
 if __name__ == '__main__':
     try:
         console = Console()
-        main()
+        
+        # gen_files_json()
+        gen_stats()
     except Exception as e:
         console.print_exception()
 
@@ -232,6 +334,68 @@ TO-DO
 -> add /
 -> Add sub arg in js
 -> Check TOR req
+
+
+
+CustomStyle = Style(
+    background='black',
+    ci_colors=(),
+    colors=('#ff5995', '#b6e354', '#feed6c', '#8cedff', '#9e6ffe', '#899ca1', '#f8f8f2', '#bf4646', '#516083', '#f92672', '#82b414', '#fd971f', '#56c2d6', '#808384', '#8c54fe', '#465457'),
+    dot_opacity='1',
+    font_family='Consolas, "Liberation Mono", Menlo, Courier, monospace',
+    foreground='#999',
+    foreground_strong='#eee',
+    foreground_subtle='#555',
+    guide_stroke_color='black',
+    guide_stroke_dasharray='4,4',
+    label_font_family=None,
+    label_font_size=10,
+    legend_font_family=None,
+    legend_font_size=14,
+    major_guide_stroke_color='black',
+    major_guide_stroke_dasharray='6,6',
+    major_label_font_family=None,
+    major_label_font_size=10,
+    no_data_font_family=None,
+    no_data_font_size=64,
+    opacity='.1',
+    opacity_hover='.75',
+    plot_background='#111',
+    stroke_opacity='.8',
+    stroke_opacity_hover='.9',
+    stroke_width='1',
+    stroke_width_hover='4',
+    title_font_family=None,
+    title_font_size=16,
+    tooltip_font_family=None,
+    tooltip_font_size=14,
+    transition='0.5s ease-out',
+    value_background='rgba(229, 229, 229, 1)',
+    value_colors=(),
+    value_font_family=None,
+    value_font_size=16,
+    value_label_font_family=None,
+    value_label_font_size=10
+)
+
+   .ok {
+        background-color: #ff5995;
+        background-color: #b6e354;
+        background-color: #feed6c;
+        background-color: #8cedff;
+        background-color: #9e6ffe;
+        background-color: #899ca1;
+        background-color: #f8f8f2;
+        background-color: #bf4646;
+        background-color: #516083;
+        background-color: #f92672;
+        background-color: #82b414;
+        background-color: #fd971f;
+        background-color: #56c2d6;
+        background-color: #808384;
+        background-color: #8c54fe;
+        background-color: #465457;
+   }
 
 '''
 
