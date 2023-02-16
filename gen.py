@@ -99,7 +99,7 @@ def upvote_chart(raw_data):
     # Initialises chart
     chart = pygal.Bar(human_readable=True, style=NeonStyle, show_legend=False)
     chart.title = 'Distribution of upvotes per subreddit'
-    chart.value_formatter = lambda x: '{:,}'.format(x)
+    chart.value_formatter = lambda x: f'{x:,}'
     data = {}
 
     # Parses the raw data
@@ -236,12 +236,12 @@ def gen_stats():
 
 def gen_subs_md():
     # Initialises text
-    text =  '| Subreddit | About | Members |\n'
-    text += '| --------- | ----- | ------- |\n'
+    text =  '|   | Subreddit | Description | Members |\n'
+    text += '| - | --------- | ----------- | ------- |\n'
 
     # Gets all the data
     pbar = tqdm(leave=True, colour=COLOR, total=len(SUBREDDITS))
-    for sub in SUBREDDITS:
+    for n, sub in enumerate(SUBREDDITS):
         # printf(f'[b GREEN3][MARKDOWN][/]  {n+1}/{len(SUBREDDITS)}) {sub}')
         pbar.set_description(sub)
 
@@ -251,7 +251,7 @@ def gen_subs_md():
         about    = '-' if not sub_data['public_description'] else sub_data['public_description'].splitlines()[0]    # Incase the about is empty
         members  = sub_data['subscribers']
 
-        text    += f'| [{name}](https://reddit.com/r/{sub}) | {about} | {members:,} |\n'
+        text    += f'| {n+1} | [{name}](https://reddit.com/r/{sub}) | {about} | {members:,} |\n'
         pbar.update()
     pbar.close()
 
@@ -308,6 +308,7 @@ SUBREDDITS =  [
     'curledfeetsies',
     'cuteguyswithcats',
     'drillcats',
+    'floof',
     'holdmycatnip',
     'illegallysmolcats',
     'kitten',
@@ -347,8 +348,8 @@ if __name__ == '__main__':
     try:
         console = Console()
         
-        gen_files_json()
-        gen_stats()
+        # gen_files_json()
+        # gen_stats()
         gen_subs_md()
     except Exception as e:
         console.print_exception()
@@ -389,6 +390,7 @@ TO-DO
 -> add /
 -> Add sub arg in js
 -> Check TOR req
+
 
 
 
@@ -433,24 +435,24 @@ CustomStyle = Style(
     value_label_font_size=10
 )
 
-   .ok {
-        background-color: #ff5995;
-        background-color: #b6e354;
-        background-color: #feed6c;
-        background-color: #8cedff;
-        background-color: #9e6ffe;
-        background-color: #899ca1;
-        background-color: #f8f8f2;
-        background-color: #bf4646;
-        background-color: #516083;
-        background-color: #f92672;
-        background-color: #82b414;
-        background-color: #fd971f;
-        background-color: #56c2d6;
-        background-color: #808384;
-        background-color: #8c54fe;
-        background-color: #465457;
-   }
+.ok {
+    background-color: #ff5995;
+    background-color: #b6e354;
+    background-color: #feed6c;
+    background-color: #8cedff;
+    background-color: #9e6ffe;
+    background-color: #899ca1;
+    background-color: #f8f8f2;
+    background-color: #bf4646;
+    background-color: #516083;
+    background-color: #f92672;
+    background-color: #82b414;
+    background-color: #fd971f;
+    background-color: #56c2d6;
+    background-color: #808384;
+    background-color: #8c54fe;
+    background-color: #465457;
+}
 
 '''
 
