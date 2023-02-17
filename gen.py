@@ -390,6 +390,7 @@ TO-DO
 -> add /
 -> Add sub arg in js
 -> Check TOR req
+-> Add diff css for mobile
 
 
 
