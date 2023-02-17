@@ -3,6 +3,7 @@
 
 
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="darkreader-lock">
     <script src="script.js"></script>
     <style>
@@ -14,14 +15,11 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            height: 99.5vh;               /* Didnt do 100vh cz with that, scroll bar was appearing */
         }
         /* If its a mobile, excuse the top url bar */
-        @media only screen and (max-width: 599px) {
-            .mediabox {
-                height: 90vh;
-                background-color: red;
-            }
+        @media only screen and (max-width: 768px) {
+            .mediabox {height: 90vh;}
         }
         .center-fit {
             max-width: 100%;
