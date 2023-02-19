@@ -8,3 +8,16 @@ html {
     margin: 3%;
     color: white;
 }
+
+
+#rand-button-div {
+    padding-top: 5%;
+    padding-bottom: 5%;
+    background-color: rgba(255,0,0, 0.5);
+    text-align: center;
+}
+
+#rand-button {
+    margin-left: auto;
+    margin-right: auto;
+}
