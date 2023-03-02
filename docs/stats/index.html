@@ -1,64 +1,12 @@
 <head>
-    <meta name="darkreader-lock">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="script.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Consolas"    rel="stylesheet">
-    <link href=" https://fonts.googleapis.com/css2?family=Montserrat" rel="stylesheet">
+    <meta name="darkreader-lock">
 
-    <style>
-        html    {background-color: rgba(0, 0, 0, 0.95);}
+    <script src="script.js" defer></script>
 
-        summary {
-            font-family: Montserrat;
-            color: white;
-            text-align: center;
-            font-size: 2em;
-            outline-style: solid;
-            outline-width: 1px;
-        }
-
-        .upvote {
-            max-height: 95vh;
-            max-width: 95vw;
-            /* margin: 15px; */
-        }
-
-        #raw_data {
-            margin-left:  1%;
-            margin-right: 1%;
-            padding: 1%;
-            color: white;
-            background-color: rgb(20, 20, 20);
-            font-family: Consolas;
-            border-radius: 5px;
-            font-size: 0.8em;
-            text-align: left;
-        }
-
-        #footer {
-            text-align: center;
-            font-size: 0.8em;
-        }
-
-        .flexcontainer {
-            /* border: 1px solid red; */
-            display: flex;
-            justify-content: center;
-        }
-        .flexitem {
-            width: 100vw;
-            min-width: 45vw;
-            max-width: 95vw;
-            padding: 5px;
-        }
-
-        /* If its a mobile, then the last 2 graphs are stacked on top of each other, and text of "Raw data" is made smaller */
-        @media only screen and (max-width: 768px) {
-            .flexcontainer {flex-wrap: wrap;}
-            summary        {font-size: 1.3em;}
-        }
-    </style>
-
+    <link href="style.css"                                           rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Consolas"   rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat" rel="stylesheet">
 </head>
 
 
@@ -66,9 +14,10 @@
     <center>
         <object data="charts/1-upvotes.svg"    type="image/svg+xml" class="upvote"></object>
         <!-- <object data="charts/1-upvotes-unsorted.svg"    type="image/svg+xml" class="upvote"></object> -->
-        <br><br>
     </center>
-    
+
+    <br><br>
+
     <div class="flexcontainer">
         <div class="flexitem">
             <object data="charts/2-extensions.svg" type="image/svg+xml"></object>

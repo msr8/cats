@@ -38,58 +38,66 @@ NeonStyle.colors = (
 
 def parse_image_post(post_data:dict):
     return {
-            'created_utc':  post_data['created_utc'],
-            'domain':       post_data['domain'],
-            'filename':     post_data['url'].split('/')[-1],
-            'media_url':    post_data['url'],
-            'op':           post_data['author'],
-            'post_url':     f'https://reddit.com{post_data["permalink"]}',
-            'score':        post_data['score'],
-            'subreddit':    post_data['subreddit'],
-            'title':        post_data['title'],
-            'type':         'image',
-            'extension':    post_data['url'].split('/')[-1].split(".")[-1].split('?')[0],    # after spliting url, result can be like filename.jpg?vbnojh76
+            post_data['id']: {
+                'created_utc':  post_data['created_utc'],
+                'domain':       post_data['domain'],
+                'filename':     post_data['url'].split('/')[-1],
+                'media_url':    post_data['url'],
+                'op':           post_data['author'],
+                'post_id':      post_data['id'],
+                'post_url':     f'https://reddit.com{post_data["permalink"]}',
+                'score':        post_data['score'],
+                'subreddit':    post_data['subreddit'],
+                'title':        post_data['title'],
+                'type':         'image',
+                'extension':    post_data['url'].split('/')[-1].split(".")[-1].split('?')[0],    # after spliting url, result can be like filename.jpg?vbnojh76
+            }
         }
 
 
 def parse_video_post(post_data:dict):
     filename = post_data['url'].split('/')[-1]  # This returns filename aka ID without the extension
-    return {
-            'created_utc':  post_data['created_utc'],
-            'domain':       post_data['domain'],
-            'filename':     f'{filename}.mpd',
-            'media_url':    f'https://v.redd.it/{filename}/DASHPlaylist.mpd',
-            'op':           post_data['author'],
-            'post_url':     f'https://reddit.com{post_data["permalink"]}',
-            'score':        post_data['score'],
-            'subreddit':    post_data['subreddit'],
-            'title':        post_data['title'],
-            'type':         'video',
-            'extension':    'mpd',
+    return { 
+            post_data['id']: {
+                'created_utc':  post_data['created_utc'],
+                'domain':       post_data['domain'],
+                'filename':     f'{filename}.mpd',
+                'media_url':    f'https://v.redd.it/{filename}/DASHPlaylist.mpd',
+                'op':           post_data['author'],
+                'post_id':      post_data['id'],
+                'post_url':     f'https://reddit.com{post_data["permalink"]}',
+                'score':        post_data['score'],
+                'subreddit':    post_data['subreddit'],
+                'title':        post_data['title'],
+                'type':         'video',
+                'extension':    'mpd',
+            }
         }
 
 
 def parse_gallery_post(post_data:dict, image_url:str):
-    ret = []
+    ret     = {}
+    post_id = post_data['id']
 
     images = post_data['media_metadata']  # This returns a dictionary which contains filenames (without ext) as keys
-    if not images:                        # Sometimes `images` can be "null", god knows why, here is a post like that: https://reddit.com/r/CatsWhoYawn/comments/z4rllw/beeper_yawns_still_hungover_from_tryptophan_ig/
-        return []
+    if not images:    return {}           # Sometimes `images` can be "null", god knows why, here is a post like that: https://reddit.com/r/CatsWhoYawn/comments/z4rllw/beeper_yawns_still_hungover_from_tryptophan_ig/
+
     for img in images.keys():
         ext = post_data['media_metadata'][img]['m'].split('image/')[-1]
-        ret.append({
+        ret[f'{post_id}+{img}'] = {
             'created_utc':  post_data['created_utc'],
             'domain':       post_data['domain'],
             'filename':     f'{img}.{ext}',
             'media_url':    image_url.format(filename=f'{img}.{ext}'),
             'op':           post_data['author'],
+            'post_id':      post_id,
             'post_url':     f'https://reddit.com{post_data["permalink"]}',
             'score':        post_data['score'],
             'subreddit':    post_data['subreddit'],
             'title':        post_data['title'],
             'type':         'image',
             'extension':    ext,   # Its always jpg (Narrator: That wasnt the case, like here: https://www.reddit.com/r/blurrypicturesofcats/comments/10ane0m/blurry_picture_of_a_cat/)
-        })
+        }
 
     return ret
 
@@ -174,7 +182,7 @@ def domain_chart(raw_data):
 
 
 def gen_files_json():
-    to_write = []
+    to_write = {}
 
     pbar = tqdm(leave=True, colour=COLOR, total=len(SUBREDDITS))
     for sub in SUBREDDITS:
@@ -195,19 +203,19 @@ def gen_files_json():
             # Checks if its a gallery
             if post_data.get('is_gallery'):
                 dics = parse_gallery_post(post_data, IMAGE_URL)
-                to_write.extend(dics)
+                to_write.update(dics)
                 continue
 
             # Checks if its a video
             if post_data.get('is_video'):
                 dic = parse_video_post(post_data)
-                to_write.append(dic)
+                to_write.update(dic)
                 continue
 
             # Checks if its an image
             if post_data.get('post_hint') == 'image':    # Used .get() because images removed by REDDIT dont have a post_hint attribute, like https://www.reddit.com/r/Kitten/comments/tnilow/baby_kitten_summer_adventures/
                 dic = parse_image_post(post_data)
-                to_write.append(dic)
+                to_write.update(dic)
         pbar.update()
     pbar.close()
 
@@ -222,7 +230,7 @@ def gen_files_json():
 def gen_stats():
     # Gets the raw data
     with open('docs/files.json') as f:
-        raw_data  = json.load(f)
+        raw_data      = json.load(f).values()
     # Generates the charts
     data = {}
     data['upvotes']    = upvote_chart(raw_data)
@@ -318,6 +326,7 @@ SUBREDDITS =  [
     'miscatculations',
     'motorboat',
     'murdermittens',
+    'myhatisacat',
     'nebelung',
     'nervysquervies',
     'noodlebones',
@@ -328,6 +337,7 @@ SUBREDDITS =  [
     'pointytailedkittens',
     'politecats',
     'pottedcats',
+    'purrkour',
     'sadcats',
     'shouldercats',
     'siamesecats',
@@ -349,7 +359,7 @@ if __name__ == '__main__':
         console = Console()
         
         # gen_files_json()
-        # gen_stats()
+        gen_stats()
         gen_subs_md()
     except Exception as e:
         console.print_exception()
@@ -388,8 +398,9 @@ TO-DO
 
 -> add /library
 -> add /
--> Add sub arg in js
--> Check TOR req
+-> Makes files.json have meta data
+
+
 
 
 

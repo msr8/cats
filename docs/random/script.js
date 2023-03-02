@@ -40,16 +40,16 @@ function change_content(div_content) {
 }
 
 
-function rand_elem(arr) {
-    return arr[ Math.floor(Math.random() * arr.length) ]
+function rand_elem(dict) {
+    keys     = Object.keys(dict);
+    rand_key = keys[ Math.floor(Math.random() * keys.length) ];
+    return dict[rand_key];
 }
 
 
 
 
 function process_files(files, args) {
-    const IMG_DATA = '<a href="{{post_url}}" target="_blank">  <img class="center-fit" src="{{media_url}}">  </a>';
-    const VID_DATA = '<video data-dashjs-player autoplay src="{{media_url}}" controls>  </video>';
     let   div_content;
     let   file_data = {};
 
@@ -99,6 +99,15 @@ function main() {
 
 
 
+const IMG_DATA = '<a href="{{post_url}}" target="_blank">  <img class="center-fit" src="{{media_url}}">  </a>';
+const VID_DATA = '<video data-dashjs-player autoplay src="{{media_url}}" controls>  </video>';
 main();
 // window.onload = main;
 
+
+
+
+// Reminder of whats logged:
+// 1) args
+// 2) my_args
+// 3) file_data
