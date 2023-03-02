@@ -182,7 +182,9 @@ def domain_chart(raw_data):
 
 
 def gen_files_json():
-    to_write = {}
+    # So that previous posts are preserved
+    with open('docs/files.json') as f:
+        raw_data = json.load(f)
 
     pbar = tqdm(leave=True, colour=COLOR, total=len(SUBREDDITS))
     for sub in SUBREDDITS:
@@ -203,24 +205,24 @@ def gen_files_json():
             # Checks if its a gallery
             if post_data.get('is_gallery'):
                 dics = parse_gallery_post(post_data, IMAGE_URL)
-                to_write.update(dics)
+                raw_data.update(dics)
                 continue
 
             # Checks if its a video
             if post_data.get('is_video'):
                 dic = parse_video_post(post_data)
-                to_write.update(dic)
+                raw_data.update(dic)
                 continue
 
             # Checks if its an image
             if post_data.get('post_hint') == 'image':    # Used .get() because images removed by REDDIT dont have a post_hint attribute, like https://www.reddit.com/r/Kitten/comments/tnilow/baby_kitten_summer_adventures/
                 dic = parse_image_post(post_data)
-                to_write.update(dic)
+                raw_data.update(dic)
         pbar.update()
     pbar.close()
 
     with open('docs/files.json', 'w') as f:
-        json.dump(to_write, f, indent=4)
+        json.dump(raw_data, f, indent=4)
 
     # with open('testing/test10.json', 'w') as f:
     #     json.dump(to_write, f, indent=4)
@@ -358,7 +360,7 @@ if __name__ == '__main__':
     try:
         console = Console()
         
-        # gen_files_json()
+        gen_files_json()
         gen_stats()
         gen_subs_md()
     except Exception as e:
