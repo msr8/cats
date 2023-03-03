@@ -1,11 +1,11 @@
 from   tqdm         import tqdm
 from   rich.console import Console
 from   rich         import inspect
-from   rich         import print as printf
-from   pygal.style  import NeonStyle, DarkStyle, Style
+from   pygal.style  import NeonStyle
 import requests     as     rq
 import pygal
 
+from   datetime     import datetime as dt
 import json
 
 NeonStyle.transition = '0.3s ease-out'
@@ -184,7 +184,7 @@ def domain_chart(raw_data):
 def gen_files_json():
     # So that previous posts are preserved
     with open('docs/files.json') as f:
-        raw_data = json.load(f)
+        raw_data = json.load(f)['data']
 
     pbar = tqdm(leave=True, colour=COLOR, total=len(SUBREDDITS))
     for sub in SUBREDDITS:
@@ -221,8 +221,16 @@ def gen_files_json():
         pbar.update()
     pbar.close()
 
+    
+    ts = dt.now()
+    to_dump = {
+        'total':                      len(raw_data),
+        'last_updated_utc':           int(ts.timestamp()),
+        'last_updated_utc_readable':  ts.strftime('%Y-%m-%d %H:%M:%S'),
+        'data':                       raw_data,
+    } 
     with open('docs/files.json', 'w') as f:
-        json.dump(raw_data, f, indent=4)
+        json.dump(to_dump, f, indent=4)
 
     # with open('testing/test10.json', 'w') as f:
     #     json.dump(to_write, f, indent=4)
@@ -232,7 +240,7 @@ def gen_files_json():
 def gen_stats():
     # Gets the raw data
     with open('docs/files.json') as f:
-        raw_data      = json.load(f).values()
+        raw_data      = json.load(f)['data'].values()
     # Generates the charts
     data = {}
     data['upvotes']    = upvote_chart(raw_data)

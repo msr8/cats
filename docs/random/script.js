@@ -92,7 +92,7 @@ function main() {
         fetch('../files.json')
             .then(response => response.json())
             .then(data => {
-                process_files(data, my_args);
+                process_files(data.data, my_args);
             });
     };
 }
