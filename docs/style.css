@@ -7,17 +7,70 @@ html {
 #main {
     margin: 3%;
     color: white;
+    letter-spacing: 0.1em;
+    line-height: 1.3em;
 }
 
 
-#rand-button-div {
-    padding-top: 5%;
-    padding-bottom: 5%;
-    background-color: rgba(255,0,0, 0.5);
+#flexbox1 {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    /* row-gap: 30px; */
+    /* column-gap: 50px; */
+    /* background-color: rgba(255, 0, 0, 0.4); */
+}
+
+
+#footer {
+    color: white;
     text-align: center;
+    /* background-color: rgba(0, 255, 0, 0.4); */
 }
 
-#rand-button {
-    margin-left: auto;
-    margin-right: auto;
+
+
+.button {
+    font-size: 2.5em;
+    color: #fca311;
+    background-color: #24252a;
+    text-align: center;
+    padding: 0.4em;
+    /* background-color: rgba(0, 255, 0, 0.4); */
+
+    font-family: 'Comfortaa';
+    font-weight: 800;
+    letter-spacing: 0.09em;
+
+    border-radius: 13px;
+    border-style: solid;
+    border-top-color:    rgb(229, 229, 229);
+    border-left-color:   rgb(229, 229, 229);
+    border-right-color:  rgb(105, 105, 105);
+    border-bottom-color: rgb(105, 105, 105);
+    transition: 0.5s;
 }
+
+
+.button:hover{
+    cursor: pointer;
+    /* color: rgba(245, 222, 179, 0.9); */
+    color: rgb(248, 219, 164);
+    border-top-color:    rgb(105, 105, 105);
+    border-left-color:   rgb(105, 105, 105);
+    border-right-color:  rgb(229, 229, 229);
+    border-bottom-color: rgb(229, 229, 229);
+
+    color: rgba(245, 222, 179, 0.9);
+    background-color: black;
+    transform: translateY(-5px);
+}
+
+
+
+
+a:link     {text-decoration: none;}
+a:visited  {text-decoration: none;}
+a:hover    {text-decoration: none;}
+a:active   {text-decoration: none;}
+

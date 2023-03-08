@@ -27,7 +27,14 @@ NeonStyle.colors = (
     '#8c54fe',
     # '#465457'
 )
+# NeonStyle.plot_background = 'rgba(1,1,1,0.5)'
+# NeonStyle.plot_background = '#111'
+NeonStyle.background = 'rgba(0,0,0,0)'
+# NeonStyle.value_background = 'rgba(0,255,0,1)'
 
+NeonStyle.foreground        = 'rgba(200, 200, 200, 1)'
+NeonStyle.foreground_strong = 'rgba(255, 255, 255, 1)'
+# NeonStyle.foreground_subtle = 'rgba(0,0,255,1)'
 
 
 
@@ -222,7 +229,7 @@ def gen_files_json():
     pbar.close()
 
     
-    ts = dt.now()
+    ts = dt.utcnow()
     to_dump = {
         'total':                      len(raw_data),
         'last_updated_utc':           int(ts.timestamp()),
@@ -328,6 +335,7 @@ SUBREDDITS =  [
     'drillcats',
     'floof',
     'holdmycatnip',
+    'ififitsisits',
     'illegallysmolcats',
     'kitten',
     'legalcatadvice',
@@ -408,7 +416,7 @@ TO-DO
 
 -> add /library
 -> add /
--> Makes files.json have meta data
+
 
 
 
