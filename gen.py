@@ -334,6 +334,7 @@ SUBREDDITS =  [
     'cuteguyswithcats',
     'drillcats',
     'floof',
+    'gingerkitty',
     'holdmycatnip',
     'ififitsisits',
     'illegallysmolcats',

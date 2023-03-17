@@ -3,32 +3,23 @@ html {
     background-color: rgba(0, 0, 0, 0.95);;
 }
 
+a {text-decoration: none;}
+
+
+
+/* ============================== MAIN TEXT ============================== */
 
 #main {
     margin: 3%;
+    font-family: Comfortaa;
+    font-weight: 300;
     color: white;
     letter-spacing: 0.1em;
-    line-height: 1.3em;
+    line-height: 1.5em;
 }
 
 
-#flexbox1 {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    /* row-gap: 30px; */
-    /* column-gap: 50px; */
-    /* background-color: rgba(255, 0, 0, 0.4); */
-}
-
-
-#footer {
-    color: white;
-    text-align: center;
-    margin: 3%;
-    /* background-color: rgba(0, 255, 0, 0.4); */
-}
-
+/* ============================== BUTTON ============================== */
 
 
 .button {
@@ -37,10 +28,12 @@ html {
     background-color: #24252a;
     text-align: center;
     padding: 0.4em;
+    text-decoration: none;
     /* background-color: rgba(0, 255, 0, 0.4); */
 
     font-family: 'Comfortaa';
-    font-weight: 800;
+    /* font-family: 'Montserrat'; */
+    font-weight: 700;
     letter-spacing: 0.09em;
 
     border-radius: 13px;
@@ -67,11 +60,42 @@ html {
     transform: translateY(-5px);
 }
 
+#flexbox1 {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    /* row-gap: 30px; */
+    /* column-gap: 50px; */
+    /* background-color: rgba(255, 0, 0, 0.4); */
+}
 
 
 
-a:link     {text-decoration: none;}
-a:visited  {text-decoration: none;}
-a:hover    {text-decoration: none;}
-a:active   {text-decoration: none;}
+
+/* ============================== FOOTER ============================== */
+
+
+#footer {
+    color: white;
+    font-family: Comfortaa;
+    font-weight: 300;
+    text-align: center;
+    margin: 3%;
+    /* background-color: rgba(0, 255, 0, 0.4); */
+}
+
+#footer>a {
+    transition: 0.3s;
+}
+
+#footer>a:link , #footer>a:visited , #footer>a:active {
+    color: rgba(255,255,255,0.5);
+}
+
+#footer>a:hover {
+    color: rgba(255,255,255,1);
+    /* font-weight: 400; */
+}
+
+
 
