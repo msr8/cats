@@ -72,7 +72,7 @@ function process_files(files, args) {
         div_content  = VID_DATA;
         div_content  = div_content.replace('{{media_url}}', file_data.m);
         const script = document.createElement('script');
-        script.src   = 'http://cdn.dashjs.org/latest/dash.all.min.js';
+        script.src   = 'https://cdn.dashjs.org/latest/dash.all.min.js';
         document.head.appendChild(script);
     }
 
