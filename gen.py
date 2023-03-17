@@ -369,6 +369,7 @@ SUBREDDITS =  [
     'thisismylifemeow',
     'turkishcats',
     'whatswrongwithyourcat',
+    'whiskerfireworks',
 ]
 
 
