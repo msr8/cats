@@ -56,23 +56,23 @@ function process_files(files, args) {
     do {
         file_data = rand_elem(files);
     }
-    while ( args.type!='any' && args.type!=file_data.type );
+    while ( args.type!='any' && args.type!=file_data.t );
 
     console.log(file_data);
-    document.title = file_data.filename;
+    document.title = file_data.f;
 
     // Checks if its an image
-    if (file_data.type == 'image') {
+    if (file_data.t == 'image') {
         div_content = IMG_DATA;
-        div_content = div_content.replace('{{post_url}}',  file_data.post_url);
-        div_content = div_content.replace('{{media_url}}', file_data.media_url);
+        div_content = div_content.replace('{{post_url}}',  file_data.p);
+        div_content = div_content.replace('{{media_url}}', file_data.m);
     }
     // Else, also loads dash.js
     else {
         div_content  = VID_DATA;
-        div_content  = div_content.replace('{{media_url}}', file_data.media_url);
+        div_content  = div_content.replace('{{media_url}}', file_data.m);
         const script = document.createElement('script');
-        script.src   = 'dash-4.5.2.js';
+        script.src   = 'http://cdn.dashjs.org/latest/dash.all.min.js';
         document.head.appendChild(script);
     }
 
@@ -89,10 +89,10 @@ function main() {
 
     // Need to do this because the div_content can only be changed when DOM and files.json has loaded
     window.onload = function() {
-        fetch('../files.json')
+        fetch('../files.min.json')
             .then(response => response.json())
             .then(data => {
-                process_files(data.data, my_args);
+                process_files(data, my_args);
             });
     };
 }
@@ -111,3 +111,9 @@ main();
 // 1) args
 // 2) my_args
 // 3) file_data
+
+// File attributes being used:
+// .type
+// .filename
+// .post_url
+// .media_url

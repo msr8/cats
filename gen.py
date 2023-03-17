@@ -235,9 +235,21 @@ def gen_files_json():
         'last_updated_utc':           int(ts.timestamp()),
         'last_updated_utc_readable':  ts.strftime('%Y-%m-%d %H:%M:%S'),
         'data':                       raw_data,
-    } 
+    }
+
+    to_dump_min = {}
+    for fid in to_dump['data']:
+        to_dump_min[fid]      = {}
+        to_dump_min[fid]['t'] = to_dump['data'][fid]['type']
+        to_dump_min[fid]['f'] = to_dump['data'][fid]['filename']
+        to_dump_min[fid]['p'] = to_dump['data'][fid]['post_url']
+        to_dump_min[fid]['m'] = to_dump['data'][fid]['media_url']
+
     with open('docs/files.json', 'w') as f:
-        json.dump(to_dump, f, indent=4)
+        json.dump(to_dump,     f, indent=4)
+    with open('docs/files.min.json', 'w') as f:
+        json.dump(to_dump_min, f)
+
 
     # with open('testing/test10.json', 'w') as f:
     #     json.dump(to_write, f, indent=4)
@@ -417,7 +429,8 @@ test10.json:  ALL the data of all posts having the "is_gallery" attribute
 TO-DO
 
 -> add /library
--> add /
+-> minify dash-js
+-> minify files.json (make a files.min.json or smth)
 
 
 
