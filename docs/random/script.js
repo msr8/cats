@@ -23,8 +23,8 @@ function process_args() {
     // TYPE
     my_args.type = 'any';
     if (args.type != undefined) {
-        if      (args.type.toLowerCase() == 'image')    {my_args.type='image';}
-        else if (args.type.toLowerCase() == 'video')    {my_args.type='video';}
+        if      (args.type.toLowerCase() == 'image')    {my_args.type='i';}
+        else if (args.type.toLowerCase() == 'video')    {my_args.type='v';}
     }
 
     // SUBREDDIT
@@ -40,29 +40,31 @@ function change_content(div_content) {
 }
 
 
-function rand_elem(dict) {
+function get_rand_key(dict) {
     keys     = Object.keys(dict);
     rand_key = keys[ Math.floor(Math.random() * keys.length) ];
-    return dict[rand_key];
+    return rand_key;
 }
 
 
 
 
 function process_files(files, args) {
-    let   div_content;
-    let   file_data = {};
+    let div_content;
+    let file_data = {};
+    let key;
 
     do {
-        file_data = rand_elem(files);
+        key       = get_rand_key(files);
+        file_data = files[key];
     }
     while ( args.type!='any' && args.type!=file_data.t );
 
     console.log(file_data);
-    document.title = file_data.f;
+    document.title = key;
 
     // Checks if its an image
-    if (file_data.t == 'image') {
+    if (file_data.t == 'i') {
         div_content = IMG_DATA;
         div_content = div_content.replace('{{post_url}}',  file_data.p);
         div_content = div_content.replace('{{media_url}}', file_data.m);
@@ -114,6 +116,5 @@ main();
 
 // File attributes being used:
 // .type
-// .filename
 // .post_url
 // .media_url

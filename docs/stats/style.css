@@ -21,6 +21,7 @@ summary {
     padding: 1%;
     color: white;
     background-color: rgb(20, 20, 20);
+    /* background-color: rgba(220, 224, 228, 0.1); */
     font-family: Consolas;
     border-radius: 5px;
     font-size: 0.8em;

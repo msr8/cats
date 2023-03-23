@@ -240,8 +240,7 @@ def gen_files_json():
     to_dump_min = {}
     for fid in to_dump['data']:
         to_dump_min[fid]      = {}
-        to_dump_min[fid]['t'] = to_dump['data'][fid]['type']
-        to_dump_min[fid]['f'] = to_dump['data'][fid]['filename']
+        to_dump_min[fid]['t'] = to_dump['data'][fid]['type'][0]
         to_dump_min[fid]['p'] = to_dump['data'][fid]['post_url']
         to_dump_min[fid]['m'] = to_dump['data'][fid]['media_url']
 
@@ -363,6 +362,7 @@ SUBREDDITS =  [
     'noodlebones',
     'notmycat',
     'oneorangebraincell',
+    'pallascats',
     'petthedamncat',
     'petthedamncat',
     'pointytailedkittens',
