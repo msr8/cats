@@ -335,6 +335,7 @@ SUBREDDITS =  [
     'catsridingroombas',
     'catsstandingup',
     'catsvstechnology',
+    'catswhochirp',
     'catswhosmoke',
     'catswhosqueak',
     'catswhoyawn',
@@ -379,6 +380,7 @@ SUBREDDITS =  [
     'thecatdimension',
     'thecattrapisworking',
     'thisismylifemeow',
+    'tuckedinkitties',
     'turkishcats',
     'whatswrongwithyourcat',
     'whiskerfireworks',
@@ -430,7 +432,8 @@ TO-DO
 
 -> add /library
 -> minify dash-js
--> minify files.json (make a files.min.json or smth)
+-> minify files.json by:
+  - removing https://
 
 
 

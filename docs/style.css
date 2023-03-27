@@ -37,6 +37,7 @@ a {text-decoration: none;}
     letter-spacing: 0.09em;
 
     border-radius: 13px;
+    border-width: 3px;
     border-style: solid;
     border-top-color:    rgb(229, 229, 229);
     border-left-color:   rgb(229, 229, 229);
