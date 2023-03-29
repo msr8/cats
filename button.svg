@@ -3,7 +3,10 @@
         <div xmlns="http://www.w3.org/1999/xhtml">
 
             <!-- https://stackoverflow.com/questions/12005860/can-i-export-part-of-an-html-page-to-an-svg-image -->
+            <!-- https://stackoverflow.com/a/36254302/17002774 -->
             <style>
+                @import url('https://fonts.googleapis.com/css?family=Comfortaa:700');
+                
                 #button {
                     font-size: 2.5em;
                     color: #fca311;
@@ -28,7 +31,7 @@
             </style>
 
             <div id="button">
-                Click Here
+                Click Her
             </div>
         </div>
     </foreignObject>
