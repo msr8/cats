@@ -1,34 +1,34 @@
-<style>
-    #button {
-        font-size: 2.5em;
-        color: #fca311;
-        background-color: #24252a;
-        text-align: center;
-        padding: 0.4em;
-        text-decoration: none;
-        /* background-color: rgba(0, 255, 0, 0.4); */
+<html>
+    <style>
+        #button {
+            font-size: 2.5em;
+            color: #fca311;
+            background-color: #24252a;
+            text-align: center;
+            padding: 0.4em;
+            text-decoration: none;
 
-        font-family: 'Comfortaa';
-        /* font-family: 'Edu NSW ACT Foundation'; */
-        font-weight: 700;
-        letter-spacing: 0.09em;
+            font-family: 'Comfortaa';
+            font-weight: 700;
+            letter-spacing: 0.09em;
 
-        border-radius: 13px;
-        border-width: 3px;
-        border-style: solid;
-        border-top-color:    rgb(229, 229, 229);
-        border-left-color:   rgb(229, 229, 229);
-        border-right-color:  rgb(105, 105, 105);
-        border-bottom-color: rgb(105, 105, 105);
-        transition: 0.5s;
-    }
-</style>
+            border-radius: 13px;
+            border-width: 3px;
+            border-style: solid;
+            border-top-color:    rgb(229, 229, 229);
+            border-left-color:   rgb(229, 229, 229);
+            border-right-color:  rgb(105, 105, 105);
+            border-bottom-color: rgb(105, 105, 105);
+            transition: 0.5s;
+        }
+    </style>
 
-<center>
-    <div id="button">
-        Random Cat
-    </div>
-</center>
+    <center>
+        <div id="button">
+            Random Cat
+        </div>
+    </center>
+</html>
 
 
 <br>
