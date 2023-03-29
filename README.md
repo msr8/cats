@@ -37,8 +37,9 @@
     <img src="button.svg">
 </div> -->
 
-[ ![img](button.svg) ](https://msr8.github.io/cats)
-
+<div align='center'>
+    [ ![img](button.svg) ](https://msr8.github.io/cats)
+</div>
 
 <br><br><br><br>
 
