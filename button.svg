@@ -1,22 +1,34 @@
 <svg fill="none" viewBox="0 0 400 400" width="400" height="400" xmlns="http://www.w3.org/2000/svg">
     <foreignObject width="100%" height="100%">
         <div xmlns="http://www.w3.org/1999/xhtml">
+    
             <style>
-            h1 {
-                color: red;
-                animation: mymove 2s infinite;
-            }
+                #button {
+                    font-size: 2.5em;
+                    color: #fca311;
+                    background-color: #24252a;
+                    text-align: center;
+                    padding: 0.4em;
+                    text-decoration: none;
 
-            @keyframes mymove {
-                from {
-                    color: red;
+                    font-family: 'Comfortaa';
+                    font-weight: 700;
+                    letter-spacing: 0.09em;
+
+                    border-radius: 13px;
+                    border-width: 3px;
+                    border-style: solid;
+                    border-top-color:    rgb(229, 229, 229);
+                    border-left-color:   rgb(229, 229, 229);
+                    border-right-color:  rgb(105, 105, 105);
+                    border-bottom-color: rgb(105, 105, 105);
+                    transition: 0.5s;
                 }
-                to {
-                    color: yellow;
-                }
-            }
             </style>
-            <h1>HELLO WORLD!</h1>
+
+            <div id="button">
+                Random Cat
+            </div>
         </div>
     </foreignObject>
 </svg>
