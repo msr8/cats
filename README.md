@@ -37,6 +37,8 @@
     <img src="button.svg">
 </div> -->
 
+<link href='https://fonts.googleapis.com/css?family=Comfortaa:700' rel='stylesheet'>
+
 <div align='center'>
     <a href='https://msr8.github.io/cats' target='_blank'>
         <img src="button.svg">
