@@ -5,7 +5,7 @@ from   pygal.style  import NeonStyle
 import requests     as     rq
 import pygal
 
-from   datetime     import datetime as dt
+from   datetime     import datetime
 import json
 
 NeonStyle.transition = '0.3s ease-out'
@@ -188,7 +188,7 @@ def domain_chart(raw_data):
 
 
 
-def gen_files_json():
+def gen_files_json(ts:datetime):
     # So that previous posts are preserved
     with open('docs/files.json') as f:
         raw_data = json.load(f)['data']
@@ -228,8 +228,7 @@ def gen_files_json():
         pbar.update()
     pbar.close()
 
-    
-    ts = dt.utcnow()
+
     to_dump = {
         'total':                      len(raw_data),
         'last_updated_utc':           int(ts.timestamp()),
@@ -270,7 +269,7 @@ def gen_stats():
 
 
 
-def gen_subs_md():
+def gen_subs_md(ts:datetime):
     # Initialises text
     text =  '|   | Subreddit | Description | Members |\n'
     text += '| - | --------- | ----------- | ------- |\n'
@@ -290,6 +289,9 @@ def gen_subs_md():
         text    += f'| {n+1} | [{name}](https://reddit.com/r/{sub}) | {about} | {members:,} |\n'
         pbar.update()
     pbar.close()
+
+    # Adds timestamp
+    text += f'\n\n<br>\n\nLast Updated (UTC): {ts.strftime("%Y-%m-%d %H:%M:%S")}'
 
     # Writes it
     with open('subreddits.md', 'w') as f:
@@ -391,10 +393,11 @@ SUBREDDITS =  [
 if __name__ == '__main__':
     try:
         console = Console()
+        ts      = datetime.utcnow()
         
-        gen_files_json()
+        gen_files_json(ts)
         gen_stats()
-        gen_subs_md()
+        gen_subs_md(ts)
     except Exception as e:
         console.print_exception()
 
