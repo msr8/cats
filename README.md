@@ -38,7 +38,9 @@
 </div> -->
 
 <div align='center'>
-    [ ![img](button.svg) ](https://msr8.github.io/cats)
+    <a href='https://msr8.github.io/cats' target='_blank'>
+        <img src="button.svg">
+    </a>
 </div>
 
 <br><br><br><br>
