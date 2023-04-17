@@ -15,7 +15,7 @@ function process_files(files_info, args) {
 function main() {
     // Need to do this because the div_content can only be changed when DOM and files.json has loaded
     window.onload = function() {
-        fetch('../files_info.json')
+        fetch('./files_info.json')
             .then(response => response.json())
             .then(data => {
                 process_files(data);
