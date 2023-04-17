@@ -1,9 +1,10 @@
+from util_funcs     import parse_image_post, parse_video_post, parse_gallery_post, upvote_chart, domain_chart, extension_chart
+
 from   tqdm         import tqdm
 from   rich.console import Console
 from   rich         import inspect
-from   pygal.style  import NeonStyle
+from   pygal.style  import NeonStyle, Style
 import requests     as     rq
-import pygal
 
 from   datetime     import datetime
 import json
@@ -43,155 +44,19 @@ NeonStyle.foreground_strong = 'rgba(255, 255, 255, 1)'
 
 
 
-def parse_image_post(post_data:dict):
-    return {
-            post_data['id']: {
-                'created_utc':  post_data['created_utc'],
-                'domain':       post_data['domain'],
-                'filename':     post_data['url'].split('/')[-1],
-                'media_url':    post_data['url'],
-                'op':           post_data['author'],
-                'post_id':      post_data['id'],
-                'post_url':     f'https://reddit.com{post_data["permalink"]}',
-                'score':        post_data['score'],
-                'subreddit':    post_data['subreddit'],
-                'title':        post_data['title'],
-                'type':         'image',
-                'extension':    post_data['url'].split('/')[-1].split(".")[-1].split('?')[0],    # after spliting url, result can be like filename.jpg?vbnojh76
-            }
-        }
-
-
-def parse_video_post(post_data:dict):
-    filename = post_data['url'].split('/')[-1]  # This returns filename aka ID without the extension
-    return { 
-            post_data['id']: {
-                'created_utc':  post_data['created_utc'],
-                'domain':       post_data['domain'],
-                'filename':     f'{filename}.mpd',
-                'media_url':    f'https://v.redd.it/{filename}/DASHPlaylist.mpd',
-                'op':           post_data['author'],
-                'post_id':      post_data['id'],
-                'post_url':     f'https://reddit.com{post_data["permalink"]}',
-                'score':        post_data['score'],
-                'subreddit':    post_data['subreddit'],
-                'title':        post_data['title'],
-                'type':         'video',
-                'extension':    'mpd',
-            }
-        }
-
-
-def parse_gallery_post(post_data:dict, image_url:str):
-    ret     = {}
-    post_id = post_data['id']
-
-    images = post_data['media_metadata']  # This returns a dictionary which contains filenames (without ext) as keys
-    if not images:    return {}           # Sometimes `images` can be "null", god knows why, here is a post like that: https://reddit.com/r/CatsWhoYawn/comments/z4rllw/beeper_yawns_still_hungover_from_tryptophan_ig/
-
-    for img in images.keys():
-        ext = post_data['media_metadata'][img]['m'].split('image/')[-1]
-        ret[f'{post_id}+{img}'] = {
-            'created_utc':  post_data['created_utc'],
-            'domain':       post_data['domain'],
-            'filename':     f'{img}.{ext}',
-            'media_url':    image_url.format(filename=f'{img}.{ext}'),
-            'op':           post_data['author'],
-            'post_id':      post_id,
-            'post_url':     f'https://reddit.com{post_data["permalink"]}',
-            'score':        post_data['score'],
-            'subreddit':    post_data['subreddit'],
-            'title':        post_data['title'],
-            'type':         'image',
-            'extension':    ext,   # Its always jpg (Narrator: That wasnt the case, like here: https://www.reddit.com/r/blurrypicturesofcats/comments/10ane0m/blurry_picture_of_a_cat/)
-        }
-
-    return ret
-
-
-
-def upvote_chart(raw_data):
-    # Initialises chart
-    chart = pygal.Bar(human_readable=True, style=NeonStyle, show_legend=False)
-    chart.title = 'Distribution of upvotes per subreddit'
-    chart.value_formatter = lambda x: f'{x:,}'
-    data = {}
-
-    # Parses the raw data
-    for dic in raw_data:
-        sub       = dic['subreddit']
-        score     = dic['score']
-        if not sub in data.keys():    data[sub] = 0
-        data[sub] += score
-
-    # Adds the parsed data into the chart
-    data = dict(sorted(data.items(), key=lambda item: item[1], reverse=True))
-    for key in data.keys():
-        chart.add(key, data[key])
-
-    # data = dict(sorted(data.items(), key=lambda item: item[1], reverse=True))
-    # for n, key in enumerate(data.keys()):
-    #     chart.add(n+1, data[key])
-    
-    chart.render_to_file('docs/stats/charts/1-upvotes.svg') 
-    return data 
-
-
-def extension_chart(raw_data):
-    # Initialises chart
-    chart = pygal.Pie(human_readable=True, style=NeonStyle)
-    chart.title = 'Distribution of extensions'
-    data = {}
-
-    # Parses the raw data
-    for dic in raw_data:
-        ext = dic['extension']
-        if not ext in data.keys():    data[ext] = 0
-        data[ext] += 1
-
-    # Adds the parsed data into the chart
-    for key in data.keys():
-        chart.add(key, data[key])
-    
-    chart.render_to_file('docs/stats/charts/2-extensions.svg')
-    return data 
-
-
-def domain_chart(raw_data):
-    # Initialises chart
-    chart = pygal.Pie(human_readable=True, style=NeonStyle)
-    chart.title = 'Distribution of domains'
-    data = {}
-
-    # Parses the raw data
-    for dic in raw_data:
-        domain = dic['domain']
-        if not domain in data.keys():    data[domain] = 0
-        data[domain] += 1
-
-    # Adds the parsed data into the chart
-    for key in data.keys():
-        chart.add(key, data[key])
-    
-    chart.render_to_file('docs/stats/charts/3-domains.svg')  
-    return data 
-
-
-
-
-
-
-
-
 
 
 
 
 
 def gen_files_json(ts:datetime):
+    """
+    This function generates a JSON file containing data from various subreddits, including images,
+    videos, and galleries.
+    """
     # So that previous posts are preserved
     with open('docs/files.json') as f:
-        raw_data = json.load(f)['data']
+        raw_data:dict = json.load(f)['data']
 
     pbar = tqdm(leave=True, colour=COLOR, total=len(SUBREDDITS))
     for sub in SUBREDDITS:
@@ -230,7 +95,7 @@ def gen_files_json(ts:datetime):
 
 
     to_dump = {
-        'total':                      len(raw_data),
+        'total_media':                len(raw_data),
         'last_updated_utc':           int(ts.timestamp()),
         'last_updated_utc_readable':  ts.strftime('%Y-%m-%d %H:%M:%S'),
         'data':                       raw_data,
@@ -254,15 +119,18 @@ def gen_files_json(ts:datetime):
 
 
 
-def gen_stats():
+def gen_stats(style:Style):
+    """
+    The function generates charts from raw data and writes the processed data to a JSON file.
+    """
     # Gets the raw data
     with open('docs/files.json') as f:
         raw_data      = json.load(f)['data'].values()
     # Generates the charts
     data = {}
-    data['upvotes']    = upvote_chart(raw_data)
-    data['extensions'] = extension_chart(raw_data) 
-    data['domains']    = domain_chart(raw_data)
+    data['upvotes']    = upvote_chart(raw_data, style)
+    data['extensions'] = extension_chart(raw_data, style) 
+    data['domains']    = domain_chart(raw_data, style)
     # Writes it to processed_data.json
     with open('docs/stats/processed_data.json', 'w') as f:
         json.dump(data, f, indent=4)
@@ -270,6 +138,10 @@ def gen_stats():
 
 
 def gen_subs_md(ts:datetime):
+    """
+    This function generates a markdown table of subreddit data including name, description, and number
+    of members, and saves it to a file with a timestamp.
+    """
     # Initialises text
     text =  '|   | Subreddit | Description | Members |\n'
     text += '| - | --------- | ----------- | ------- |\n'
@@ -296,6 +168,40 @@ def gen_subs_md(ts:datetime):
     # Writes it
     with open('subreddits.md', 'w') as f:
         f.write(text)
+
+
+
+def gen_files_info_json(ts:datetime):
+    '''
+    last_updated_utc,
+    last_updated_utc_readable,
+    total_subreddits,
+    total_files,
+    total_images,
+    total_videos,
+    '''
+    # Last updated
+    data = {
+        'last_updated_utc':           int(ts.timestamp()),
+        'last_updated_utc_readable':  ts.strftime('%Y-%m-%d %H:%M:%S'),
+    }
+
+    # Number of subreddits
+    with open('subreddits.md') as f:
+        data['total_subreddits'] = f.read().count('https://reddit.com/r/')
+    
+    # Composition of media
+    with open('docs/files.json') as f:
+        raw_data:dict    = json.load(f)['data']
+    data['total_files']  = len(raw_data)
+    data['total_images'] = len([ i for i in raw_data if raw_data[i]['type']=='image' ])
+    data['total_videos'] = len([ i for i in raw_data if raw_data[i]['type']=='video' ])
+
+    # Dumping the data
+    with open('docs/files_info.json' , 'w') as f:
+        json.dump(data, f, indent=4)
+    
+    
 
 
 
@@ -328,6 +234,7 @@ SUBREDDITS =  [
     'catsarealiens',
     'catsareassholes',
     'catsareliquid',
+    'catsaremuslim',
     'catsbeingbanks',
     'catsbeingcats',
     'catsinsinks',
@@ -350,6 +257,7 @@ SUBREDDITS =  [
     'flamepoints',
     'floof',
     'gingerkitty',
+    'greebles',
     'holdmycatnip',
     'ififitsisits',
     'illegallysmolcats',
@@ -400,8 +308,9 @@ if __name__ == '__main__':
         ts      = datetime.utcnow()
         
         gen_files_json(ts)
-        gen_stats()
+        gen_stats(NeonStyle)
         gen_subs_md(ts)
+        gen_files_info_json(ts)
     except Exception as e:
         console.print_exception()
 
@@ -438,9 +347,7 @@ test10.json:  ALL the data of all posts having the "is_gallery" attribute
 TO-DO
 
 -> add /library
--> minify dash-js
--> minify files.json by:
-  - removing https://
+
 
 
 
@@ -508,7 +415,6 @@ CustomStyle = Style(
     background-color: #8c54fe;
     background-color: #465457;
 }
-
 '''
 
 
