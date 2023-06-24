@@ -1,5 +1,5 @@
 @import url('https://msr8.github.io/style.css');
-@import url('https://fonts.googleapis.com/css?family=Montserrat|Consolas');
+@import url('https://fonts.googleapis.com/css?family=Montserrat|Inconsolata');
 
 html    {background-color: var(--bg-color);}
 
@@ -25,7 +25,7 @@ summary {
     color: white;
     background-color: rgb(10, 10, 10);
     /* background-color: rgba(220, 224, 228, 0.1); */
-    font-family: Consolas;
+    font-family: Inconsolata;
     border-radius: 5px;
     font-size: 1em;
     text-align: left;
