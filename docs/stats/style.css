@@ -28,7 +28,7 @@ summary {
     font-family: Inconsolata;
     border-radius: 5px;
     font-size: 1em;
-    letter-spacing: 0.05em;
+    /* letter-spacing: 0.05em; */
     text-align: left;
 }
 
@@ -52,5 +52,5 @@ summary {
 /* If its a mobile, then the last 2 graphs are stacked on top of each other, and text of "Raw data" is made smaller */
 @media only screen and (max-width: 768px) {
     .flexcontainer {flex-wrap: wrap;}
-    summary        {font-size: 1.3em;}
+    summary        {font-size: 2em;}
 }
