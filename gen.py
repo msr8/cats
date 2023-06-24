@@ -28,9 +28,7 @@ NeonStyle.colors = (
     '#8c54fe',
     # '#465457'
 )
-# NeonStyle.plot_background = 'rgba(1,1,1,0.5)'
-# NeonStyle.plot_background = '#111'
-NeonStyle.background = 'rgba(0,0,0,0)'
+NeonStyle.plot_background = NeonStyle.background = 'rgb(10, 10, 10)'
 # NeonStyle.value_background = 'rgba(0,255,0,1)'
 
 NeonStyle.foreground        = 'rgba(200, 200, 200, 1)'
@@ -307,10 +305,10 @@ if __name__ == '__main__':
         console = Console()
         ts      = datetime.utcnow()
         
-        gen_files_json(ts)
+        # gen_files_json(ts)
         gen_stats(NeonStyle)
-        gen_subs_md(ts)
-        gen_files_info_json(ts)
+        # gen_subs_md(ts)
+        # gen_files_info_json(ts)
     except Exception as e:
         console.print_exception()
 
