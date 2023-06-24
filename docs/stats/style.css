@@ -1,4 +1,5 @@
 @import url('https://msr8.github.io/style.css');
+@import url('https://fonts.googleapis.com/css?family=Montserrat|Inconsolata');
 
 html    {background-color: var(--bg-color);}
 
