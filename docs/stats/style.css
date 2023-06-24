@@ -52,5 +52,5 @@ summary {
 /* If its a mobile, then the last 2 graphs are stacked on top of each other, and text of "Raw data" is made smaller */
 @media only screen and (max-width: 768px) {
     .flexcontainer {flex-wrap: wrap;}
-    summary        {font-size: 2em;}
+    summary        {font-size: 1.5em;}
 }
