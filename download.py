@@ -47,7 +47,7 @@ os.makedirs(dir, exist_ok=True)
 
 
 # Create a ThreadPoolExecutor with a specified number of workers
-with ThreadPoolExecutor(max_workers=10) as executor:
+with ThreadPoolExecutor(max_workers=100) as executor:
     # Submit each file download as a separate task to the executor
     futures = []
     for i in files.values():
