@@ -63,4 +63,4 @@ Contains various statistics about the scraped data (such as distribution of upvo
 Contains all the scraped data in a human readable JSON format
 
 ## /files.min.json
-Contains the scraped data in a minified way, and is almost 4x as small as files.json
+Contains the scraped data in a minified way, is almost 4x smaller than files.json
