@@ -184,13 +184,12 @@ def gen_files_info_json(ts:datetime):
         'last_updated_utc_readable':  ts.strftime('%Y-%m-%d %H:%M:%S'),
     }
 
-    # Number of subreddits
-    with open('subreddits.md') as f:
-        data['total_subreddits'] = f.read().count('https://reddit.com/r/')
-    
-    # Composition of media
     with open('docs/files.json') as f:
-        raw_data:dict    = json.load(f)['data']
+        raw_data:dict = json.load(f)['data']
+
+    # Number of subreddits
+    data['total_subreddits'] = len(set([ i['subreddit'] for i in raw_data.values() ]))
+    # Composition of media
     data['total_files']  = len(raw_data)
     data['total_images'] = len([ i for i in raw_data if raw_data[i]['type']=='image' ])
     data['total_videos'] = len([ i for i in raw_data if raw_data[i]['type']=='video' ])
@@ -306,9 +305,9 @@ if __name__ == '__main__':
         ts      = datetime.utcnow()
         
         # gen_files_json(ts)
-        gen_stats(NeonStyle)
+        # gen_stats(NeonStyle)
         # gen_subs_md(ts)
-        # gen_files_info_json(ts)
+        gen_files_info_json(ts)
     except Exception as e:
         console.print_exception()
 
