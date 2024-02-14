@@ -5,7 +5,7 @@ html    {background-color: var(--bg-color);}
 
 summary {
     font-family: Montserrat;
-    color: white;
+    color: var(--fg-color);
     text-align: center;
     font-size: 2em;
     outline-style: solid;

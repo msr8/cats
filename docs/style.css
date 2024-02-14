@@ -16,7 +16,7 @@ a {text-decoration: none;}
     margin: 3%;
     font-family: Comfortaa;
     font-weight: 300;
-    color: white;
+    color: var(--fg-color);
     letter-spacing: 0.1em;
     line-height: 1.5em;
 }
