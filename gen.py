@@ -291,6 +291,7 @@ SUBREDDITS =  [
     'thecattrapisworking',
     'thisismylifemeow',
     'torties',
+    'trojancats',
     'tuckedinkitties',
     'turkishcats',
     'whatswrongwithyourcat',
