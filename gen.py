@@ -233,6 +233,7 @@ SUBREDDITS =  [
     'catsaremuslim',
     'catsbeingbanks',
     'catsbeingcats',
+    'catbongos',
     'catsinsinks',
     'catslaps',
     'catsmirin',
